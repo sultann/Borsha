@@ -67,3 +67,108 @@ add_action( 'widgets_init', 'borsha_widgets_init' );
 /**Include files **/
 require_once get_template_directory() . '/inc/wp-bootstrap-navwalker.php';
 
+/*
+
+function add_borsha_event() {
+	register_post_type( 'borhsa_event',
+		array(
+			'labels' => array(
+				'name' => __( 'Events' ),
+				'singular_name' => __( 'Event' )
+			),
+			'public' => true,
+			'has_archive' => true,
+			'rewrite' => array('slug' => 'event'),
+		)
+	);
+}
+add_action( 'init', 'add_borsha_event' );
+
+
+
+function borsha_add_meta_boxes(){
+
+	add_meta_box('borsha_event_details', __('Event Details', 'borsha'), 'borsha_event_details_callback', 'borhsa_event');
+
+}
+add_action('add_meta_boxes', 'borsha_add_meta_boxes');
+
+function borsha_event_details_callback($post){
+	$event_name = get_post_meta($post->ID, '_borhsa_event_location', true);
+	$event_start = get_post_meta($post->ID, '_borhsa_event_start', true);
+	$event_end = get_post_meta($post->ID, '_borhsa_event_end', true);
+
+
+
+	?>
+	<style>
+		.borsha-inputs{
+			display: block;
+			width: 50%;
+			clear: both;
+			margin-bottom: 10px;
+		}
+	</style>
+
+	<label for="">Location Name</label>
+	<input type="text" class="borsha-inputs" name="_borhsa_event_location" value="<?php echo $event_name; ?>">
+	<label for="">Event Start Date</label>
+	<input type="date" class="borsha-inputs" name="_borhsa_event_start" value="<?php echo $event_start; ?>">
+	<label for="">Event Start end</label>
+	<input type="date" class="borsha-inputs" name="_borhsa_event_end" value="<?php echo $event_end; ?>">
+	<?php
+}
+
+function borsha_save_event_details($post_id){
+	$post_type = get_post_type($post_id);
+
+	if( $post_type == 'borhsa_event' ){
+		if( isset($_POST['_borhsa_event_location'])){
+			update_post_meta($post_id, '_borhsa_event_location', trim($_POST['_borhsa_event_location']));
+		}
+
+		if( isset($_POST['_borhsa_event_start'])){
+			update_post_meta($post_id, '_borhsa_event_start', trim($_POST['_borhsa_event_start']));
+		}
+
+		if( isset($_POST['_borhsa_event_end'])){
+			update_post_meta($post_id, '_borhsa_event_end', trim($_POST['_borhsa_event_end']));
+		}
+	}
+}
+add_action('save_post', 'borsha_save_event_details');
+*/
+
+/**
+ * Register our metaboxes
+ */
+
+function borhsa_add_meta_boxes(){
+	add_meta_box('brosha_event_details', 'Event Details', 'brosha_event_details_callback', 'post');
+}
+add_action('add_meta_boxes', 'borhsa_add_meta_boxes');
+
+function brosha_event_details_callback($post){
+	?>
+
+	<label for="">Location Name</label>
+	<input type="text" class="borsha-inputs" name="_borhsa_event_location" value="<?php echo get_post_meta($post->ID, '_borhsa_event_location', true); ?>">
+
+	<?php
+}
+
+/**
+ * Save our metabox value
+ */
+function borhsa_save_event_details($post_id){
+
+	if( get_post_type($post_id) ==  'post' ){
+
+		if(isset($_POST['_borhsa_event_location'])){
+			update_post_meta($post_id, '_borhsa_event_location', trim($_POST['_borhsa_event_location']));
+		}
+
+	}
+
+}
+add_action('save_post', 'borhsa_save_event_details');
