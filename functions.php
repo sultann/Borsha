@@ -252,3 +252,6 @@ function borsha_restaurant_type_taxonomy(){
 	register_taxonomy( 'restaurant_type', array('restaurant'), $args );
 }
 add_action('init', 'borsha_restaurant_type_taxonomy');
+
+//add shortcodes
+require "inc/shortcodes.php";
